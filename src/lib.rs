@@ -13,6 +13,7 @@ pub use self::{
     indicator::*, info_type::*, interval::*, nullability::*, param_type::*, sql_data_type::*,
     sqlreturn::*, set_pos::*,
 };
+use num_enum::TryFromPrimitive;
 use std::os::raw::{c_int, c_void};
 
 mod attributes;
@@ -20,6 +21,7 @@ mod bulk_operation;
 mod c_data_type;
 mod desc;
 mod fetch_orientation;
+mod function_id;
 mod functions;
 mod indicator;
 mod info_type;
@@ -107,7 +109,7 @@ pub enum FreeStmtOption {
 
 /// Represented in C headers as SQLSMALLINT
 #[repr(i16)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, TryFromPrimitive)]
 pub enum HandleType {
     Env = 1,
     Dbc = 2,

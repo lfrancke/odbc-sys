@@ -1,9 +1,11 @@
+use std::ffi::c_char;
 use crate::{
     BulkOperation, CDataType, Char, CompletionType, ConnectionAttribute, Desc, DriverConnectOption,
     EnvironmentAttribute, FetchOrientation, FreeStmtOption, HDbc, HDesc, HEnv, HStmt, HWnd, Handle,
     HandleType, InfoType, Integer, Len, Lock, Nullability, Operation, ParamType, Pointer, RetCode,
     SetPosIRow, SmallInt, SqlDataType, SqlReturn, StatementAttribute, ULen, USmallInt, WChar,
 };
+use crate::function_id::GetFunctionsArgument;
 
 pub static mut NUM_ENVIRONMENT: u32 = 0;
 
@@ -410,7 +412,7 @@ extern "system" {
         decimal_digits: SmallInt,
         parameter_value_ptr: Pointer,
         buffer_length: Len,
-        str_len_or_ind_ptr: *mut Len,
+        length_or_indicator: *mut Len,
     ) -> SqlReturn;
 
     /// Performs bulk insertions and bulk bookmark operations, including update, delete, and fetch by bookmark.
@@ -739,7 +741,7 @@ extern "system" {
     /// Rowsets can be specified at an absolute or relative position or by bookmark.
     ///
     /// # Returns
-    /// 
+    ///
     /// `SUCCESS`, `SUCCESS_WITH_INFO`, `ERROR`, `INVALID_HANDLE`, or `STILL_EXECUTING`.
     pub fn SQLFetchScroll(
         statement_handle: HStmt,
@@ -749,11 +751,11 @@ extern "system" {
 
     /// Sets the cursor position in a rowset and allows an application to refresh, update or delete
     /// data in the rowset.
-    /// 
+    ///
     /// See: <https://learn.microsoft.com/sql/odbc/reference/syntax/sqlsetpos-function>
-    /// 
+    ///
     /// # Parameters
-    /// 
+    ///
     /// * `statement_handle`: Statement Handle
     /// * `row_number`: Position of the row in the rowset on which to perform the operation
     ///   specified with the Operation argument. If `row_number` is 0, the operation applies to
@@ -761,9 +763,9 @@ extern "system" {
     /// * `operation`: Operation to perform
     /// * `lock_type`: Specifies how to lock the row after performing the operation specified in the
     ///   Operation argument.
-    /// 
+    ///
     /// # Returns
-    /// 
+    ///
     /// `SUCCESS`, `SUCCESS_WITH_INFO`, `NEED_DATA`, `STILL_EXECUTING`, `ERROR`, or
     /// `INVALID_HANDLE`.
     pub fn SQLSetPos(
@@ -986,4 +988,26 @@ extern "system" {
     /// `SUCCESS`, `SUCCESS_WITH_INFO`, `NEED_DATA`, `NO_DATA`, `STILL_EXECUTING`, `ERROR`,
     /// `INVALID_HANDLE`, or `PARAM_DATA_AVAILABLE`.
     pub fn SQLParamData(hstmt: HStmt, value_out: *mut Pointer) -> SqlReturn;
+
+    pub fn SQLGetFunctions(
+        hdbc: HDbc,
+        function_id: GetFunctionsArgument,
+        supported_ptr: *mut SmallInt,
+    ) -> SqlReturn;
+
+
+
+}
+
+#[link(name = "odbcinst")]
+extern {
+pub fn SQLGetPrivateProfileString(
+    lpsz_section: *const c_char,
+    lpsz_entry: *const c_char,
+    lpsz_default: *const c_char,
+    ret_buffer: *mut c_char,
+    cb_ret_buffer: i32,
+    lpsz_filename: *const c_char,
+) -> i32;
+
 }
