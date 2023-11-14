@@ -999,15 +999,35 @@ extern "system" {
 
 }
 
-#[link(name = "odbcinst")]
-extern {
-pub fn SQLGetPrivateProfileString(
-    lpsz_section: *const c_char,
-    lpsz_entry: *const c_char,
-    lpsz_default: *const c_char,
-    ret_buffer: *mut c_char,
-    cb_ret_buffer: i32,
-    lpsz_filename: *const c_char,
-) -> i32;
-
+#[cfg_attr(windows, link(name = "odbc32"))]
+#[cfg_attr(
+    all(not(windows), not(feature = "static"), not(feature = "iodbc")),
+    link(name = "odbcinst")
+)]
+#[cfg_attr(
+    all(not(windows), feature = "static", not(feature = "iodbc")),
+    link(name = "odbcinst", kind = "static")
+)]
+#[cfg_attr(
+    all(not(windows), not(feature = "static"), feature = "iodbc"),
+    link(name = "iodbcinst")
+)]
+#[cfg_attr(
+    all(not(windows), feature = "static", feature = "iodbc"),
+    link(name = "iodbcinst", kind = "static")
+)]
+extern "C" {
+    ///  Gets a list of names of values or data corresponding to a value of the system information.
+    ///
+    /// # Returns
+    ///
+    /// The amount of characters returned (negative indicates an error)
+    pub fn SQLGetPrivateProfileStringW(
+        section: *const WChar,
+        entry: *const WChar,
+        default: *const WChar,
+        ret_buffer: *mut WChar,
+        ret_buffer_size: i32,
+        filename: *const WChar,
+    ) -> i32;
 }
