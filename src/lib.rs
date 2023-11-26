@@ -9,9 +9,9 @@
 //! in the cargo.toml
 
 pub use self::{
-    attributes::*, bulk_operation::*, c_data_type::*, desc::*, fetch_orientation::*, functions::*,
-    indicator::*, info_type::*, interval::*, nullability::*, param_type::*, set_pos::*,
-    sql_data_type::*, sqlreturn::*,
+    attributes::*, bulk_operation::*, c_data_type::*, desc::*, fetch_orientation::*,
+    function_id::*, functions::*, indicator::*, info_type::*, interval::*, nullability::*,
+    param_type::*, set_pos::*, sql_data_type::*, sqlreturn::*,
 };
 use num_enum::TryFromPrimitive;
 use std::os::raw::{c_int, c_void};

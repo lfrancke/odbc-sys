@@ -20,7 +20,7 @@ pub enum EnvironmentAttribute {
 ///
 /// Possible values for `OdbcVersion` attribute set with `SQLSetEnvAttr` to declare ODBC version
 #[repr(i32)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, TryFromPrimitive)]
 pub enum AttrOdbcVersion {
     // Not supported by this crate
     // SQL_OV_ODBC2 = 2,
@@ -43,7 +43,7 @@ impl From<AttrOdbcVersion> for Pointer {
 ///
 /// See: <https://docs.microsoft.com/en-us/sql/odbc/reference/syntax/sqlsetenvattr-function>
 #[repr(u32)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, TryFromPrimitive)]
 pub enum AttrConnectionPooling {
     /// Connection pooling is turned off. This is the default.
     Off = 0,
@@ -77,7 +77,7 @@ impl From<AttrConnectionPooling> for Pointer {
 /// Possible values for `CpMatch` attribute set with [`crate::SQLSetEnvAttr`] to define which connection
 /// attributes must match for a connection returned from the pool
 #[repr(u32)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, TryFromPrimitive)]
 pub enum AttrCpMatch {
     /// Only connections that exactly match the connection options in the call and the connection
     /// attributes set by the application are reused. This is the default.
