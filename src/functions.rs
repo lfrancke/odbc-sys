@@ -1,10 +1,10 @@
+use crate::function_id::GetFunctionsArgument;
 use crate::{
     BulkOperation, CDataType, Char, CompletionType, ConnectionAttribute, Desc, DriverConnectOption,
     EnvironmentAttribute, FetchOrientation, FreeStmtOption, HDbc, HDesc, HEnv, HStmt, HWnd, Handle,
     HandleType, InfoType, Integer, Len, Lock, Nullability, Operation, ParamType, Pointer, RetCode,
     SetPosIRow, SmallInt, SqlDataType, SqlReturn, StatementAttribute, ULen, USmallInt, WChar,
 };
-use crate::function_id::GetFunctionsArgument;
 
 pub static mut NUM_ENVIRONMENT: u32 = 0;
 
@@ -993,7 +993,5 @@ extern "system" {
         function_id: GetFunctionsArgument,
         supported_ptr: *mut SmallInt,
     ) -> SqlReturn;
-
-
 
 }

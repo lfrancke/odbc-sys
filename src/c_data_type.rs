@@ -1,3 +1,5 @@
+use num_enum::TryFromPrimitive;
+
 /// Extended C Types range 4000 and above. Range of -100 thru 200 is reserved by Driver Manager.
 /// `SQL_C_TYPES_EXTENDED`.
 pub const C_TYPES_EXTENDED: i16 = 0x04000;
@@ -5,7 +7,7 @@ pub const C_TYPES_EXTENDED: i16 = 0x04000;
 /// The C data type is specified in the SQLBindCol and SQLGetData functions with the TargetType
 /// argument and in the SQLBindParameter function with the ValueType argument.
 #[repr(i16)]
-#[derive(Debug, PartialEq, Eq, Clone, Copy)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, TryFromPrimitive)]
 pub enum CDataType {
     /// SQL_ARD_TYPE
     Ard = -99,
